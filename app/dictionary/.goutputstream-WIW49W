@@ -1,0 +1,11 @@
+package dictionary;
+
+public class LookUp {
+	public static boolean match(String word, String filter){
+		if(word.isEmpty()){
+			return filter.isEmpty() || filter.charAt(0)=='*';
+		}else{
+			if(filter.isEmpty())
+				return false;
+			else{
+				if(filter.charAt(0)=='?' || filter.charAt(0)=='

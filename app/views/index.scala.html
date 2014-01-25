@@ -1,0 +1,30 @@
+@(filter : String, words : List[dictionary.Word])
+@main("Dictionary Search") {
+	<form action="/search" method="POST">
+	<input type="text" name="filter" default="@filter">
+	<button>Search</button>
+	</form>
+	<div id="results">
+	<h2>Results for @filter</h2>
+	<table>
+	<tr>
+	<th>Simplified</th>
+	<th>Traditional</th>
+	<th>Pinyin</th>
+	<th>Translation</th>
+	</tr>
+	@for(word <- words){
+		<tr>
+		<td>@word.simp</td>
+		<td>@word.trad</td>
+		<td>@word.pinyin</td>
+		<td>
+		@for(definition <- word.defs){
+			@definition,&nbsp;&nbsp;
+		}
+		</td>
+		</tr>
+	}
+	</table>
+	</div>
+}
