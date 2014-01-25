@@ -20,7 +20,7 @@ public class Dico {
 	Set<String> setTrad;
 	Set<String> setSimp;
 
-	private static String dicoURL = "http://localhost:9000/assets/cedict_ts.u8";
+	private static String dicoURL = "http://dico.siriusxiv.cloudbees.net/assets/cedict_ts.u8";
 	private static String LOCAL_DICO = "dico";
 
 	public Dico() throws IOException{
