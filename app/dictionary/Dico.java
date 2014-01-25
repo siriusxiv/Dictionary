@@ -2,8 +2,13 @@ package dictionary;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -14,11 +19,21 @@ public class Dico {
 	HashMap<String,Word> wordsSimp;
 	Set<String> setTrad;
 	Set<String> setSimp;
-	
+
+	private static String dicoURL = "http://localhost:9000/assets/cedict_ts.u8";
+	private static String LOCAL_DICO = "dico";
+
 	public Dico() throws IOException{
 		wordsTrad=new HashMap<String,Word>();
 		wordsSimp=new HashMap<String,Word>();
-		InputStreamReader reader = new InputStreamReader(new FileInputStream("cedict_ts.u8"),"UTF-8");
+		
+		ReadableByteChannel in=Channels.newChannel(new URL(dicoURL).openStream());
+		FileOutputStream fos = new FileOutputStream(LOCAL_DICO);
+		FileChannel out = fos.getChannel();
+		out.transferFrom(in, 0, Long.MAX_VALUE);
+		fos.close();
+		
+		InputStreamReader reader = new InputStreamReader(new FileInputStream(LOCAL_DICO),"UTF-8");
 		BufferedReader br = new BufferedReader(reader);
 		String line;
 		while((line=br.readLine())!=null){
@@ -36,7 +51,7 @@ public class Dico {
 		setTrad=wordsTrad.keySet();
 		setSimp=wordsSimp.keySet();
 	}
-	
+
 	public ArrayList<Word> findWordsMatching(String filter){
 		ArrayList<Word> result = new ArrayList<Word>();
 		for(String word : this.setSimp){
@@ -45,7 +60,7 @@ public class Dico {
 		}
 		return result;
 	}
-	
+
 	public static void main(String[] args) throws IOException{
 		long tic = Calendar.getInstance().getTimeInMillis();
 		Dico dic = new Dico();
@@ -62,6 +77,6 @@ public class Dico {
 				System.out.println(w);
 			}
 		}
-		
+
 	}
 }
