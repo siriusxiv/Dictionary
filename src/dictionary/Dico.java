@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 public class Dico {
@@ -35,21 +34,16 @@ public class Dico {
 		}
 		br.close();
 		setTrad=wordsTrad.keySet();
-		setSimp=wordsTrad.keySet();
+		setSimp=wordsSimp.keySet();
 	}
 	
-	Set<Word> findWordsMatching(String filter){
-		Set<Word> result = new HashSet<Word>();
+	ArrayList<Word> findWordsMatching(String filter){
+		ArrayList<Word> result = new ArrayList<Word>();
 		for(String word : this.setSimp){
-			if(Dico.match(word,filter))
+			if(LookUp.match(word,filter))
 				result.add(wordsSimp.get(word));
 		}
 		return result;
-	}
-
-	private static boolean match(String word, String filter){
-		//NOTHING DONE
-		return false;
 	}
 	
 	public static void main(String[] args) throws IOException{
@@ -57,5 +51,17 @@ public class Dico {
 		Dico dic = new Dico();
 		long tac = Calendar.getInstance().getTimeInMillis();
 		System.out.println("Dico loaded in "+(tac-tic)+"ms");
+		System.out.println("Type your search:");
+		while(true){
+			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+			String filter = bufferRead.readLine();
+			if(filter.equals("q"))
+				break;
+			ArrayList<Word> words = dic.findWordsMatching(filter);
+			for(Word w : words){
+				System.out.println(w);
+			}
+		}
+		
 	}
 }

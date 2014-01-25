@@ -30,4 +30,13 @@ public class Word {
 			n=line.indexOf('/',m+1);
 		}
 	}
+	
+	@Override
+	public String toString(){
+		String definitions="/";
+		for(String s : defs){
+			definitions+=s+"/";
+		}
+		return trad+" "+simp+" "+"["+pinyin+"]"+definitions;
+	}
 }
