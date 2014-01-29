@@ -30,10 +30,25 @@ public class Application extends Controller {
 
 	public static Result search(){
 		DynamicForm info = Form.form().bindFromRequest();
-		String filter = info.get("filter");
-		ArrayList<Word> words = dic.findWordsMatching(filter);
+		String filter = info.get("filter").toLowerCase();
+		ArrayList<Word> words;
+		if(isChinese(filter))
+			words = dic.findWordsMatching(filter);
+		else
+			words = dic.findWordsMatchingEnglish(filter);
 		System.out.println(filter);
 		return ok(index.render(filter,words));
+	}
+
+	private static boolean isChinese(String filter) {
+		String any = "abcdefghijklmnopqrstuvwxyz ,()!?;:";
+		for(int i = 0; i<filter.length() ; i++){
+			for(int j = 0; j<any.length() ; j++){
+				if(any.charAt(j)==filter.charAt(i))
+					return false;
+			}
+		}
+		return true;
 	}
 
 }

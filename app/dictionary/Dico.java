@@ -79,4 +79,13 @@ public class Dico {
 		}
 
 	}
+
+	public ArrayList<Word> findWordsMatchingEnglish(String filter) {
+		ArrayList<Word> result = new ArrayList<Word>();
+		for(String word : this.setSimp){
+			if(LookUp.containsEnglish(this,word,filter))
+				result.add(wordsSimp.get(word));
+		}
+		return result;
+	}
 }

@@ -35,4 +35,13 @@ public class LookUp {
 	public static void main(String[] args){
 		System.out.println(match("aav", "a*"));
 	}
+
+	public static boolean containsEnglish(Dico dico, String word, String filter) {
+		Word word_def = dico.wordsSimp.get(word);
+		for(String def : word_def.defs){
+			if(def.toLowerCase().indexOf(filter)!=-1)
+				return true;
+		}
+		return false;
+	}
 }
