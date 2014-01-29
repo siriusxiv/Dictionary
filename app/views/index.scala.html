@@ -1,11 +1,11 @@
-@(filter : String, words : List[dictionary.Word])
+@(filter : String, words : List[dictionary.Word],searchingTime : String)
 @main("Dictionary Search") {
 	<form action="/" method="POST">
 	<input type="text" name="filter" default="@filter">
 	<button>Search</button>
 	</form>
 	<div id="results">
-	<h2>Results for @filter</h2>
+	<h2>Results for @filter : found @filter.length() results in @searchingTime</h2>
 	<table>
 	<tr>
 	<th>Simplified</th>

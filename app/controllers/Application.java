@@ -25,10 +25,11 @@ public class Application extends Controller {
 			}catch(IOException e){
 				e.printStackTrace();
 			}
-		return ok(index.render("", new ArrayList<Word>()));
+		return ok(index.render("", new ArrayList<Word>(),""));
 	}
 
 	public static Result search(){
+		long tic = Calendar.getInstance().getTimeInMillis();
 		DynamicForm info = Form.form().bindFromRequest();
 		String filter = info.get("filter").toLowerCase();
 		ArrayList<Word> words;
@@ -37,7 +38,8 @@ public class Application extends Controller {
 		else
 			words = dic.findWordsMatchingEnglish(filter);
 		System.out.println(filter);
-		return ok(index.render(filter,words));
+		long tac = Calendar.getInstance().getTimeInMillis();
+		return ok(index.render(filter,words,new Long(tac-tic)+"ms"));
 	}
 
 	private static boolean isChinese(String filter) {
