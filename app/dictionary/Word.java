@@ -7,6 +7,7 @@ public class Word {
 	public String simp;
 	public String pinyin;
 	public ArrayList<String> defs;
+	public boolean properName;
 	
 	Word(String line){
 		//System.out.println(line);
@@ -29,6 +30,8 @@ public class Word {
 			m=n;
 			n=line.indexOf('/',m+1);
 		}
+		properName = pinyin.charAt(0) >= 'A' && pinyin.charAt(0) <= 'Z';
+		//System.out.println(properName+defs.get(0));
 	}
 	
 	@Override

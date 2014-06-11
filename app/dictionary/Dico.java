@@ -23,7 +23,7 @@ public class Dico {
 	private static String dicoURL = "http://dico.herokuapp.com/assets/cedict_ts.u8";
 	private static String LOCAL_DICO = "dico";
 
-	public Dico() throws IOException{
+	public Dico(boolean withProperName) throws IOException{
 		wordsTrad=new HashMap<String,Word>();
 		wordsSimp=new HashMap<String,Word>();
 		
@@ -42,9 +42,11 @@ public class Dico {
 				int j = line.indexOf(' ',i+1);
 				String trad = line.substring(0, i);
 				Word w = new Word(line);
-				wordsTrad.put(trad, w);
-				String simp = line.substring(i+1, j);
-				wordsSimp.put(simp, w);
+				if(withProperName || !w.properName){
+					wordsTrad.put(trad, w);
+					String simp = line.substring(i+1, j);
+					wordsSimp.put(simp, w);
+				}
 			}
 		}
 		br.close();
@@ -63,7 +65,7 @@ public class Dico {
 
 	public static void main(String[] args) throws IOException{
 		long tic = Calendar.getInstance().getTimeInMillis();
-		Dico dic = new Dico();
+		Dico dic = new Dico(true);
 		long tac = Calendar.getInstance().getTimeInMillis();
 		System.out.println("Dico loaded in "+(tac-tic)+"ms");
 		System.out.println("Type your search:");

@@ -1,8 +1,8 @@
-@(filter : String, words : List[dictionary.Word],searchingTime : String)
+@(filter : String, words : List[dictionary.Word], searchingTime : String, noProperName : Boolean)
 @main("Dictionary Search") {
 	<form action="/" method="POST">
 	<input type="text" name="filter" default="@filter">
-	<button>Search</button>
+	<button>Search</button><input type="checkbox" name="proper"@if(noProperName){ checked}> Excludes proper names
 	</form>
 	<div id="results">
 	<h2>Results for @filter : found @words.size() results in @searchingTime</h2>

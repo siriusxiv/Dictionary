@@ -13,33 +13,42 @@ import play.mvc.Result;
 import views.html.index;
 
 public class Application extends Controller {
-	public static Dico dic = null;
+	public static Dico dic_common_name_only = null;
+	public static Dico dic_all = null;
 
 	public static Result index() {
-		if(dic==null)
+		if(dic_all==null)
 			try{
 				long tic = Calendar.getInstance().getTimeInMillis();
-				dic = new Dico();
+				dic_all = new Dico(true);
+				dic_common_name_only = new Dico(false);
 				long tac = Calendar.getInstance().getTimeInMillis();
 				System.out.println("Dico loaded in "+(tac-tic)+"ms");
 			}catch(IOException e){
 				e.printStackTrace();
 			}
-		return ok(index.render("", new ArrayList<Word>(),""));
+		return ok(index.render("", new ArrayList<Word>(),"", false));
 	}
 
 	public static Result search(){
 		long tic = Calendar.getInstance().getTimeInMillis();
 		DynamicForm info = Form.form().bindFromRequest();
 		String filter = info.get("filter").toLowerCase();
+		boolean noProperName = info.get("proper") != null;
 		ArrayList<Word> words;
 		if(isChinese(filter))
-			words = dic.findWordsMatching(filter);
+			if(noProperName)
+				words = dic_common_name_only.findWordsMatching(filter);
+			else
+				words = dic_all.findWordsMatching(filter);
 		else
-			words = dic.findWordsMatchingEnglish(filter);
+			if(noProperName)
+				words = dic_common_name_only.findWordsMatchingEnglish(filter);
+			else
+				words = dic_all.findWordsMatchingEnglish(filter);
 		System.out.println(filter);
 		long tac = Calendar.getInstance().getTimeInMillis();
-		return ok(index.render(filter,words,new Long(tac-tic)+"ms"));
+		return ok(index.render(filter,words,new Long(tac-tic)+"ms",noProperName));
 	}
 
 	private static boolean isChinese(String filter) {
